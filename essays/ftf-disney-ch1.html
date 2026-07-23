@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ring-a-ding-ding, You're Going to Disney! — An Unreliable Translator</title>
+<style>
+:root {
+  --ground:     #F2EDE3;
+  --ground-mid: #EAE4D6;
+  --ink:        #1B3A4B;
+  --muted:      rgba(27,58,75,0.52);
+  --amber:      #C4883A;
+  --rule:       rgba(196,136,58,0.22);
+  --rule-dark:  rgba(27,58,75,0.18);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground:     #0B1E28;
+    --ground-mid: #0F2532;
+    --ink:        #E8DDD2;
+    --muted:      rgba(232,221,210,0.52);
+    --amber:      #D09652;
+    --rule:       rgba(208,150,82,0.20);
+    --rule-dark:  rgba(232,221,210,0.14);
+  }
+}
+:root[data-theme="dark"] {
+  --ground:     #0B1E28;
+  --ground-mid: #0F2532;
+  --ink:        #E8DDD2;
+  --muted:      rgba(232,221,210,0.52);
+  --amber:      #D09652;
+  --rule:       rgba(208,150,82,0.20);
+  --rule-dark:  rgba(232,221,210,0.14);
+}
+:root[data-theme="light"] {
+  --ground:     #F2EDE3;
+  --ground-mid: #EAE4D6;
+  --ink:        #1B3A4B;
+  --muted:      rgba(27,58,75,0.52);
+  --amber:      #C4883A;
+  --rule:       rgba(196,136,58,0.22);
+  --rule-dark:  rgba(27,58,75,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Times New Roman', Times, serif;
+  background: var(--ground);
+  background-image: linear-gradient(170deg, var(--ground) 0%, var(--ground-mid) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  line-height: 1.8;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: opacity 0.15s;
+}
+.back-link:hover { opacity: 0.7; }
+
+.chapter-nav {
+  font-size: 0.72rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2.5rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.chapter-nav .active { color: var(--ink); font-weight: 600; }
+.chapter-nav .coming { color: rgba(27,58,75,0.22); pointer-events: none; }
+@media (prefers-color-scheme: dark) {
+  .chapter-nav .coming { color: rgba(232,221,210,0.20); }
+}
+
+header {
+  border-bottom: 1px solid var(--rule-dark);
+  margin-bottom: 2.25rem;
+  padding-bottom: 1.25rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: normal;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+p { margin-bottom: 1.5em; }
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s;
+}
+a:hover { text-decoration-color: var(--ink); }
+
+.pull-quote {
+  border-left: 2px solid var(--amber);
+  margin: 2rem 0;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  font-style: italic;
+  font-size: 1.08rem;
+  color: var(--ink);
+}
+.pull-quote cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.01em;
+}
+
+.ref-link {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.ref-link a { color: var(--amber); text-decoration-color: var(--amber); }
+
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 560px) {
+  body { padding: 1.25rem 1rem 3.5rem; }
+  h1 { font-size: 1.45rem; }
+}
+
+a:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="../index.html">&larr; The Writer</a>
+
+<nav class="chapter-nav" aria-label="Article chapters">
+  <span class="active">Chapter 1</span>
+  <span class="coming">Chapter 2 &mdash; coming</span>
+  <span class="coming">Chapter 3 &mdash; coming</span>
+</nav>
+
+<header>
+  <h1>Ring-a-ding-ding, You&rsquo;re Going to Disney!</h1>
+</header>
+
+<p>On March 6, 2026, my grandson Avery Dees rang the bell at Children&rsquo;s Hospital in St. Louis, marking the official end of his treatment after more than a two-year battle against B-ALL, b-cell acute lymphoblastic leukemia.</p>
+
+<img src="../assets/avery-bell.jpg" alt="Avery Dees rings the bell at Children's Hospital in St. Louis, March 6, 2026" style="width:55%;display:block;margin:1.75rem auto;">
+
+<p>Throughout those turbulent years, local partners supported Avery&rsquo;s family &mdash; including <a href="https://www.friendsofkids.com/" target="_blank" rel="noopener">Friends of Kids with Cancer</a>, a St. Louis&ndash;based nonprofit. Through this organization&rsquo;s generosity, my daughter&rsquo;s family was able to step outside the illness for a while: tickets to local attractions, nights out at St. Louis Blues and Cardinals games. So when my daughter told me that Avery would be eligible to become a &ldquo;Wish Kid,&rdquo; it felt like one more kindness offered to us in the middle of this unfathomable hurdle we had been scaling as a family.</p>
+
+<p>At first, it sounded like Avery might go to Disney World in Orlando at some point &mdash; but the trip was at least a year away. Holding that future in their hearts, the family went on with the quieter work of healing from the wounds cancer leaves behind.</p>
+
+<p>That was, until one day in May, when my phone rang.</p>
+
+<p>&ldquo;Mom,&rdquo; my daughter said, &ldquo;we got offered a trip with Kurt Warner to Disney &mdash; but we have to go June 13th through the 20th. <em>This year.</em>&rdquo;</p>
+
+<p>And that is where the story begins&hellip;</p>
+
+<p>Once it was established that I would be invited to come along &mdash; as long as I paid my own airfare and park tickets &mdash; I became much more personally invested in this adventure. For many people, that would mean shopping for Disney outfits, ordering matching T-shirts, and making packing lists.</p>
+
+<p>For me, it meant investigation.</p>
+
+<p>In my worldview, gifts create relationships, and this one smelled a lot like &ldquo;charity&rdquo; from my vantage. If someone was going to invest this much time and money in my family, and I was tagging along, I wanted to know something about them.</p>
+
+<p>Living in St. Louis, I wasn&rsquo;t starting from zero. Like most people here, I knew who Kurt Warner was. I knew he had quarterbacked the Rams. I knew Brenda Warner&rsquo;s name. I knew they had become something of a St. Louis institution before eventually settling in Arizona. I thought they had quite a few kids and that they were Christians.</p>
+
+<p>Unlike many St. Louisans, I am not a sports fan. The fact that I knew Kurt Warner was a testament to his greatness, or at least his ubiquity, as I both knew his name and could picture his face. I had absorbed the cultural version of the Warners simply by living in the Midwest, but almost everything I &ldquo;knew&rdquo; about them was more, &ldquo;Was he on Dancing with the Stars?&rdquo; and &ldquo;Do they still give out coats in St. Louis?&rdquo; rather than any real concept of the Warner family or its goals.</p>
+
+<p>Then there was Brenda Warner &mdash; who I knew even less about. I knew she had a reputation as outspoken from both a personality and fashion sense, and I knew that she was profoundly Christian. For some, this would be a sense of comfort. As a former Southern Baptist with both an appreciation and wariness of others&rsquo; belief structures, I needed more information to feel like I could accept this generosity authentically.</p>
+
+<p>So I did what I always do.</p>
+
+<p>I started reading.</p>
+
+<blockquote class="pull-quote">
+  &ldquo;First Things First. I have to give praise and glory to my Lord and Savior up above. Thank you, Jesus.&rdquo;
+  <cite>&mdash; Kurt Warner, post-game interview, Super Bowl XXXIV</cite>
+</blockquote>
+
+<p>Beginning with the website, I learned about <a href="https://www.kurtwarner.org/" target="_blank" rel="noopener">First Things First</a> and their mission which is based on Matthew 6:33 from the Bible: &ldquo;But seek first his kingdom and his righteousness, and all these things will be given to you as well.&rdquo; This seemed like &mdash; if nothing else &mdash; a consistent message as I had seen clips of him after winning the Superbowl where the phrase &ldquo;First Things First&rdquo; originated officially as a Warner slogan. Also, his family worked to forefront its faith, so it tracked that the organization they started together would also be focused in this way. As I read, I realized that this organization began by foregrounding the needs of medically complex kids and their families, and that it had been going on for over twenty years.</p>
+
+<p>That last part caught my attention.</p>
+
+<p>Wait, it&rsquo;s now 2026? That&rsquo;s twenty-four years. We were going on this trip in its twenty-fourth year.</p>
+
+<p>How had I lived in St. Louis all this time without ever hearing about these Disney trips?</p>
+
+<p>As a researcher, from a systems perspective, that didn&rsquo;t make immediate sense to me. Organizations that survive for twenty-four years don&rsquo;t usually do so by accident. Organizations that quietly give away weeklong Disney vacations certainly don&rsquo;t. If good things had been happening in my own community &mdash; or at least the Midwest &mdash; for nearly a quarter of a century, why had they escaped my notice?</p>
+
+<p>With the evidence piling up in the consistency-over-time category, I read <em>First Things First: The Rules of Being a Warner</em>, Kurt and Brenda&rsquo;s book about family and parenting from 2009. In general, it seemed like a common-sense approach to managing a large family with a wide variety of needs. In this case, the Warners also use their spirituality as a North Star for guidance and comfort. As a grandmother and educational researcher, I appreciated their approach and found it grounded echoes of research-based practice.</p>
+
+<p>Right before we left, I picked up Brenda Warner&rsquo;s 2011 book <em>One Call Away</em>, where I learned of Brenda&rsquo;s life before Kurt and how they worked to build a family together in spite of tragedy. After that I became what I will lovingly refer to as a &ldquo;Brenda Warner Fan Girl for Life.&rdquo; However, with a PhD in education and the baked-in cynicism of a middle-aged Midwesterner, I reserved too much adoration until I was in-person. I mean it IS the Show-Me State, and nothing is for free, right? But Momma also said, &ldquo;For free? Take.&rdquo; She was always a practical lady, so I tucked in my Missouri-born wisdom &mdash; using some publicly available data for triangulation &mdash; and got to packing.</p>
+
+<p>With my initial concerns cleared enough that I could attend this trip with authenticity and gratitude, early on the morning of June 13, 2026, I headed for the airport and onto the adventure of a lifetime.</p>
+
+<div class="ref-link">
+  Want the backstory? <a href="https://penelopemudd.github.io/Missouri-Public-Education-/episodes/ftf-disney.html" target="_blank" rel="noopener">First Things First &mdash; background research</a>
+</div>
+
+<footer>Kim Starkey &nbsp;&middot;&nbsp; 2026</footer>
+
+</body>
+</html>
