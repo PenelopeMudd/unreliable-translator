@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Unreliable Translator — Kim Starkey</title>
+<style>
+/* ── TOKENS ── */
+:root {
+  --ground:     #F2EDE3;
+  --ground-mid: #EAE4D6;
+  --ink:        #1B3A4B;
+  --muted:      rgba(27,58,75,0.52);
+  --amber:      #C4883A;
+  --rule:       rgba(196,136,58,0.22);
+  --pearl:      #F2EDE3;
+  --deep:       #1B3A4B;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground:     #0B1E28;
+    --ground-mid: #0F2532;
+    --ink:        #E8DDD2;
+    --muted:      rgba(232,221,210,0.52);
+    --amber:      #D09652;
+    --rule:       rgba(208,150,82,0.20);
+    --deep:       #0B1E28;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:     #0B1E28;
+  --ground-mid: #0F2532;
+  --ink:        #E8DDD2;
+  --muted:      rgba(232,221,210,0.52);
+  --amber:      #D09652;
+  --rule:       rgba(208,150,82,0.20);
+  --deep:       #0B1E28;
+}
+:root[data-theme="light"] {
+  --ground:     #F2EDE3;
+  --ground-mid: #EAE4D6;
+  --ink:        #1B3A4B;
+  --muted:      rgba(27,58,75,0.52);
+  --amber:      #C4883A;
+  --rule:       rgba(196,136,58,0.22);
+  --deep:       #1B3A4B;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Times New Roman', Times, serif;
+  background: var(--ground);
+  background-image: linear-gradient(170deg, var(--ground) 0%, var(--ground-mid) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--ground);
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 52px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.site-name {
+  font-size: 0.95rem;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.nav-links button {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+.nav-links button:hover { color: var(--ink); }
+.nav-links button.active {
+  color: var(--ink);
+  border-bottom: 1px solid var(--amber);
+  padding-bottom: 2px;
+}
+.nav-links .ext {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links .ext:hover { color: var(--ink); }
+.nav-links .ext::after { content: ' ↗'; }
+
+/* ── PAGES ── */
+.page { display: none; padding: 72px 52px 100px; }
+.page.active { display: block; }
+
+/* ── HOME ── */
+.home-head {
+  max-width: 680px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 64px;
+}
+.home-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--amber);
+  margin-bottom: 28px;
+}
+.home-title {
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-weight: normal;
+  font-style: italic;
+  line-height: 1.1;
+  text-wrap: balance;
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+}
+.home-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.rooms-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.rooms {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  max-width: 840px;
+}
+.room-card {
+  padding: 36px 36px 36px 0;
+  border-right: 1px solid var(--rule);
+}
+.room-card:last-child { border-right: none; padding-right: 0; }
+.room-card:not(:first-child) { padding-left: 36px; }
+.room-card h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.room-card p {
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 24px;
+}
+.enter-link {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Times New Roman', Times, serif;
+  padding: 0;
+  transition: opacity 0.15s;
+}
+.enter-link:hover { opacity: 0.7; }
+
+/* ── ROOM PAGES ── */
+.room-header {
+  margin-bottom: 56px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+  max-width: 700px;
+}
+.eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 16px;
+}
+.room-header h1 {
+  font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+  font-weight: normal;
+  font-style: italic;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin-bottom: 16px;
+  letter-spacing: -0.005em;
+}
+.room-intro {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── WORK LIST ── */
+.work-list { list-style: none; max-width: 720px; }
+.work-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.work-item:first-child { border-top: 1px solid var(--rule); }
+.work-item .meta {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.work-item .title {
+  font-size: 1.05rem;
+  margin-bottom: 7px;
+  line-height: 1.35;
+}
+.work-item .title a { color: var(--ink); text-decoration: none; }
+.work-item .title a:hover { color: var(--amber); }
+.work-item .desc {
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.placeholder-link {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--amber);
+  opacity: 0.85;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+/* ── WRITER LIST ── */
+.writer-list { list-style: none; max-width: 680px; }
+.writer-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+.writer-item:first-child { border-top: 1px solid var(--rule); }
+.writer-item .wtitle {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ink);
+}
+.writer-item .read {
+  font-size: 0.68rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--amber);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.writer-item .read:hover { opacity: 0.7; }
+.substack-cta {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.72rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.substack-cta a {
+  color: var(--amber);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.substack-cta a:hover { opacity: 0.7; }
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 52px 0 16px;
+}
+.tool-item {
+  max-width: 680px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.tool-item:first-of-type { border-top: 1px solid var(--rule); }
+.tool-item .title {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+.tool-item .title a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.tool-item .title a:hover { color: var(--amber); }
+.tool-item .desc {
+  font-size: 0.87rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* ── ABOUT ── */
+.about-wrap {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.about-bio { font-size: 1rem; line-height: 1.75; }
+.about-credentials {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.85;
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+}
+.about-links {
+  font-size: 0.83rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.about-links a {
+  color: var(--amber);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.about-links a:hover { opacity: 0.7; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 16px 24px; }
+  .page { padding: 48px 24px 72px; }
+  .rooms { grid-template-columns: 1fr; }
+  .room-card {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 28px 0;
+  }
+  .room-card:not(:first-child) { padding-left: 0; }
+  .room-card:last-child { border-bottom: none; }
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="site-name" onclick="show('home')" role="button" tabindex="0">An Unreliable Translator</span>
+  <ul class="nav-links">
+    <li><button onclick="show('researcher')" id="tab-researcher">The Researcher</button></li>
+    <li><button onclick="show('practitioner')" id="tab-practitioner">The Practitioner</button></li>
+    <li><button onclick="show('writer')" id="tab-writer">The Writer</button></li>
+    <li><button onclick="show('about')" id="tab-about">About</button></li>
+    <li><a class="ext" href="https://penelopemudd.github.io/HecKte" target="_blank">HecKte</a></li>
+  </ul>
+</nav>
+
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="home-head">
+    <div class="home-rule"></div>
+    <h1 class="home-title">An Unreliable Translator</h1>
+    <p class="home-sub">Translation is never clean.</p>
+  </div>
+
+  <p class="rooms-label">Which option are you looking for?</p>
+
+  <div class="rooms">
+    <div class="room-card">
+      <h2>The Researcher</h2>
+      <p>Longitudinal studies, mixed-methods analysis, and the research behind the practice.</p>
+      <button class="enter-link" onclick="show('researcher')">Enter &rarr;</button>
+    </div>
+    <div class="room-card">
+      <h2>The Practitioner</h2>
+      <p>Tools, presentations, and what the data looks like when it hits a real building.</p>
+      <button class="enter-link" onclick="show('practitioner')">Enter &rarr;</button>
+    </div>
+    <div class="room-card">
+      <h2>The Writer</h2>
+      <p>Essays and public writing on education, AI, and what happens when translation fails.</p>
+      <button class="enter-link" onclick="show('writer')">Enter &rarr;</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- THE RESEARCHER -->
+<div class="page" id="page-researcher">
+  <div class="room-header">
+    <div class="eyebrow">The Researcher</div>
+    <h1>The work behind the practice.</h1>
+    <p class="room-intro">Longitudinal qualitative research, mixed-methods analysis, and translational study &mdash; reading data most people don't look at, across time periods most people don't use.</p>
+  </div>
+
+  <ul class="work-list">
+    <li class="work-item">
+      <div class="meta">Dissertation &middot; UMSL &middot; March 2023</div>
+      <div class="title">Design Thinking and Empathy Development in Middle School ELA</div>
+      <div class="desc">Quasi-experimental mixed methods. 129 seventh-graders, 12 weeks, 5 treatment groups. Examined whether combining Design Thinking with Reader's Workshop develops empathy more effectively than alternative instructional approaches. Finding: RW + DT showed the most promise; empathy development requires sustained, explicit instruction to produce measurable growth.</div>
+      <span class="placeholder-link">Available on request</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Longitudinal Study &middot; UMSL &middot; June 2026</div>
+      <div class="title">Principal Perceptions of First-Year Teacher Preparedness</div>
+      <div class="desc">Longitudinal convergent mixed-methods analysis. 6 years quantitative, 8 years qualitative. Finding: classroom management is the dominant and persistent gap across both data streams simultaneously.</div>
+      <span class="placeholder-link">Available on request</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Year 1 CoI Paper &middot; UMSL &middot; June 2026</div>
+      <div class="title">Classroom Management Support at Missouri School</div>
+      <div class="desc">Year 1 RPP site report. Building-level diagnostic using SW-PBS 4:1 benchmark and structured classroom observations across 11 teachers. Finding: management challenges are structural, not individual.</div>
+      <span class="placeholder-link">Available on request</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Article &middot; 2026</div>
+      <div class="title">Platner / Clinton Article</div>
+      <span class="placeholder-link">[Live link when published]</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Draft &middot; In Progress</div>
+      <div class="title">Warner Noble Purpose</div>
+      <span class="placeholder-link">[Link when published]</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Presentation &middot; MACTE &middot; March 2026</div>
+      <div class="title">Principal Perceptions of First-Year Teacher Preparedness</div>
+      <div class="desc">MACTE, March 2026.</div>
+      <span class="placeholder-link">[Deck when available]</span>
+    </li>
+    <li class="work-item">
+      <div class="meta">Video &middot; Too Louse Rock &middot; 2026</div>
+      <div class="title"><a href="https://penelopemudd.github.io/Missouri-Public-Education-/episodes/episode-01.html" target="_blank">TLR Episode 1 &mdash; Missouri Public Education</a></div>
+      <div class="desc">Amendment 5, school funding, and what the numbers actually say. First episode of Too Louse Rock, a public education series.</div>
+    </li>
+    <li class="work-item">
+      <div class="meta">Article &middot; Review of Educational Research &middot; 2016</div>
+      <div class="title"><a href="https://doi.org/10.3102/0034654316628993" target="_blank">Critical Discourse Analysis in Education: A Review of the Literature, 2004 to 2012</a></div>
+      <div class="desc">Rogers, R., Schaenen, I., Schott, C., O'Brien, K., Trigos-Carrillo, L., Starkey, K., &amp; Chasteen, C. C. <em>Review of Educational Research</em>, 86(4), 1192&ndash;1226.</div>
+    </li>
+  </ul>
+</div>
+
+
+<!-- THE PRACTITIONER -->
+<div class="page" id="page-practitioner">
+  <div class="room-header">
+    <div class="eyebrow">The Practitioner</div>
+    <h1>What the research looks like when it hits a real building.</h1>
+    <p class="room-intro">Tools, presentations, and frameworks built for educators who need something they can use &mdash; not something they have to translate first.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Presentations</div>
+  <div class="tool-item">
+    <div class="title">What Classroom Management Is Already Telling You &mdash; and How to Listen to the Data</div>
+    <div class="desc">Thurma Conference &middot; May 2026 &middot; Two sessions. A practitioner-facing read of the FYTP data: what principals say, what it means, and how to use it.</div>
+    <div class="desc" style="font-size:0.82rem; font-style:italic;">Available on request</div>
+  </div>
+
+  <div class="section-label">Tools</div>
+  <div class="tool-item">
+    <div class="title">Problem of Practice Worksheet</div>
+    <div class="desc">A structured tool for identifying and naming the problem before building a solution.</div>
+    <span class="placeholder-link">Available on request</span>
+  </div>
+  <div class="tool-item">
+    <div class="title">Observation Rubrics</div>
+    <div class="desc">Classroom observation frameworks tied to the research on what integrated practice looks like.</div>
+    <span class="placeholder-link">Available on request</span>
+  </div>
+  <div class="tool-item">
+    <div class="title">Thurma Statement Sort</div>
+    <div class="desc">14 statements for workshop use. Print and cut.</div>
+    <span class="placeholder-link">Available on request</span>
+  </div>
+  <div class="tool-item">
+    <div class="title">Cycle of Inquiry</div>
+    <div class="desc">Workshop handout form.</div>
+    <span class="placeholder-link">Available on request</span>
+  </div>
+
+  <div class="section-label">Consulting Practice</div>
+  <div class="tool-item">
+    <div class="title"><a href="https://penelopemudd.github.io/HecKte" target="_blank">HecKte &uarr;</a></div>
+    <div class="desc">The consulting practice. Workshops, building diagnostics, and thinking partnership.</div>
+  </div>
+</div>
+
+
+<!-- THE WRITER -->
+<div class="page" id="page-writer">
+  <div class="room-header">
+    <div class="eyebrow">The Writer</div>
+    <h1>Essays on education, AI, and what happens when translation fails.</h1>
+    <p class="room-intro">Public writing from the seam between research and practice &mdash; where the clean explanations stop working.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Disney World, 2026</div>
+  <ul class="writer-list" style="margin-bottom:52px;">
+    <li class="writer-item">
+      <span class="wtitle">Ring-a-ding-ding, You're Going to Disney!</span>
+      <a class="read" href="essays/ftf-disney-ch1.html">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle" style="color:var(--muted);">Chapter 2 &mdash; coming</span>
+      <span class="read" style="color:var(--muted); cursor:default; pointer-events:none;">Coming</span>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle" style="color:var(--muted);">Chapter 3 &mdash; coming</span>
+      <span class="read" style="color:var(--muted); cursor:default; pointer-events:none;">Coming</span>
+    </li>
+  </ul>
+
+  <div class="section-label">From Substack</div>
+  <ul class="writer-list">
+    <li class="writer-item">
+      <span class="wtitle">As the Tides Turn</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">Changes</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">Darmok at the End</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">Say Her Name Again</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">Seeking the Misaligned</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">The Ambiguity of Grief</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">The Edge of Y</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">The Last Bundle of Other People's Laundry</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+    <li class="writer-item">
+      <span class="wtitle">Untitled &mdash; Platner Clinton, July 9</span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+  </ul>
+
+  <div class="substack-cta">
+    <a href="https://unreliabletranslator.substack.com" target="_blank">Read more on Substack &rarr;</a>
+  </div>
+
+  <div class="section-label" style="margin-top:56px;">Ongoing Series</div>
+  <ul class="writer-list">
+    <li class="writer-item">
+      <span class="wtitle"><em>Kim Meets AI</em> &mdash; Nonsense Ensues<br><span style="font-size:0.82rem; font-style:normal; color:var(--muted);">My AI Called Tuesday Wednesday and Nobody Noticed</span></span>
+      <a class="read" href="https://unreliabletranslator.substack.com" target="_blank">Read &rarr;</a>
+    </li>
+  </ul>
+</div>
+
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="room-header">
+    <div class="eyebrow">About</div>
+    <h1>Kim Starkey, PhD</h1>
+  </div>
+
+  <div class="about-wrap">
+    <p class="about-bio">For eighteen years I taught middle school English; then I earned a PhD in educational psychology and learned to name what I'd been doing all along &mdash; translation. I help people and organizations see what's already true in their own experience and turn it into something they can use: the patterns hiding in the messy, human, free-text data most systems collect and can't read.</p>
+
+    <div class="about-credentials">
+      <div>Post-Doctoral Fellow in Translational Research, UMSL College of Education</div>
+      <div>PhD, University of Missouri&ndash;St. Louis</div>
+      <div>18 years middle school ELA, Missouri public schools</div>
+      <div>Student, parent, teacher, researcher &mdash; Missouri public education, 53 years</div>
+    </div>
+
+    <div class="about-links">
+      <a href="mailto:kimmstarkey22@gmail.com">kimmstarkey22@gmail.com</a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function show(room) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  var page = document.getElementById('page-' + room);
+  if (page) page.classList.add('active');
+  var tab = document.getElementById('tab-' + room);
+  if (tab) tab.classList.add('active');
+  window.scrollTo(0, 0);
+}
+document.querySelector('.site-name').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show('home'); }
+});
+</script>
+
+</body>
+</html>
