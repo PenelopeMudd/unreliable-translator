@@ -395,7 +395,7 @@ button:focus-visible, a:focus-visible {
 
 
 <!-- HOME -->
-<div class="page active" id="page-home">
+<div class="page" id="page-home">
   <div class="home-head">
     <div class="home-rule"></div>
     <h1 class="home-title">An Unreliable Translator</h1>
@@ -527,7 +527,7 @@ button:focus-visible, a:focus-visible {
 
 
 <!-- THE WRITER -->
-<div class="page" id="page-writer">
+<div class="page active" id="page-writer">
   <div class="room-header">
     <div class="eyebrow">The Writer</div>
     <p class="room-intro">Public writing from the seam between research and practice &mdash; where the clean explanations stop working.</p>
@@ -640,6 +640,7 @@ function show(room) {
 document.querySelector('.site-name').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show('home'); }
 });
+document.getElementById('tab-writer').classList.add('active');
 </script>
 
 </body>
