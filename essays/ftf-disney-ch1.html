@@ -80,6 +80,8 @@ body {
   gap: 1.5rem;
   flex-wrap: wrap;
 }
+.chapter-nav a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.chapter-nav a:hover { color: var(--ink); }
 .chapter-nav .active { color: var(--ink); font-weight: 600; }
 .chapter-nav .coming { color: rgba(27,58,75,0.22); pointer-events: none; }
 @media (prefers-color-scheme: dark) {
@@ -165,7 +167,8 @@ a:focus-visible {
 <nav class="chapter-nav" aria-label="Article chapters">
   <span class="active">Chapter 1</span>
   <a href="ftf-disney-ch2.html">Chapter 2</a>
-  <span class="coming">Chapter 3 &mdash; coming</span>
+  <a href="ftf-disney-ch3.html">Chapter 3</a>
+  <span class="coming">Chapter 4 &mdash; coming</span>
 </nav>
 
 <header>
