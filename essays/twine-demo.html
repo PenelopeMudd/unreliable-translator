@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week Three — A Classroom Scenario</title>
+<style>
+:root{
+  --ground:#EDF7F8;--ink:#1A4248;--muted:rgba(26,66,72,0.52);
+  --amber:#2A9EA4;--rule:rgba(42,158,164,0.22);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --ground:#0D2B31;--ink:#D6EFF2;--muted:rgba(214,239,242,0.52);
+    --amber:#3EC4CA;--rule:rgba(62,196,202,0.20);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Times New Roman',Times,serif;
+  background:var(--ground);color:var(--ink);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:52px 24px;
+}
+.story{max-width:560px;width:100%;}
+.passage{display:none;}
+.passage.active{display:block;}
+.rule{width:40px;height:2px;background:var(--amber);margin-bottom:24px;}
+.eyebrow{font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber);margin-bottom:18px;}
+.text{font-size:1.05rem;line-height:1.8;margin-bottom:36px;}
+.choices{display:flex;flex-direction:column;gap:10px;}
+.choice{
+  font-family:'Times New Roman',Times,serif;font-size:0.9rem;
+  color:var(--ink);background:none;border:1px solid var(--rule);
+  padding:14px 18px;cursor:pointer;text-align:left;line-height:1.55;
+  transition:border-color 0.15s,color 0.15s;
+}
+.choice:hover{border-color:var(--amber);color:var(--amber);}
+.back{
+  font-family:'Times New Roman',Times,serif;font-size:0.68rem;
+  letter-spacing:0.10em;text-transform:uppercase;color:var(--muted);
+  background:none;border:none;cursor:pointer;padding:0;
+  margin-top:32px;display:block;transition:color 0.15s;
+}
+.back:hover{color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="story">
+
+  <div class="passage active" id="start">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      Marcus calls out again without raising his hand. Third time this period. A few students are starting to glance over. The lesson is moving, but just barely.<br><br>What do you do?
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('address-now')">Address it directly, in front of the class.</button>
+      <button class="choice" onclick="go('redirect')">Redirect the energy — change what the class is doing.</button>
+      <button class="choice" onclick="go('ignore')">Let it go for now. Talk to him after.</button>
+    </div>
+  </div>
+
+  <div class="passage" id="address-now">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      You stop the lesson and name what's happening. "Marcus, we raise our hands here." The room gets quiet. Marcus sits back. Two other students exchange a look.<br><br>The behavior stops — for now. But Marcus goes flat. He doesn't answer anything for the rest of the period, even when called on.<br><br>What does this tell you?
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('read-compliance')">He needed the correction. Compliance is a starting point.</button>
+      <button class="choice" onclick="go('read-shutdown')">He shut down. The correction landed wrong.</button>
+    </div>
+    <button class="back" onclick="go('start')">← Back</button>
+  </div>
+
+  <div class="passage" id="redirect">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      You shift the structure — move from lecture to a quick pair share. Marcus has someone to talk to. The calling out stops. He's engaged, actually animated, working with his partner.<br><br>The rest of the period holds. But this isn't a fix. It's a clue.<br><br>What's it telling you?
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('clue-structure')">The clue is about structure. He needs more movement, more talk.</button>
+      <button class="choice" onclick="go('clue-belonging')">The clue is about belonging. He's reaching for connection, not causing trouble.</button>
+    </div>
+    <button class="back" onclick="go('start')">← Back</button>
+  </div>
+
+  <div class="passage" id="ignore">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      You let it go. The lesson continues. Marcus calls out two more times. By the end of the period, a third student has started doing it too.<br><br>After class you pull Marcus aside. He doesn't seem to understand why you're bringing it up — he's been doing this all year, in every class.<br><br>Where do you start?
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('talk-expectation')">This is a norm gap. He needs the expectation explained, not punished.</button>
+      <button class="choice" onclick="go('talk-connection')">Start with connection. Find out what's going on with him before you say anything about behavior.</button>
+    </div>
+    <button class="back" onclick="go('start')">← Back</button>
+  </div>
+
+  <div class="passage" id="read-compliance">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      Compliance is real information. He heard you and responded. That's a relationship you can build on.<br><br>The flatness is worth watching, not fixing today. Some students need a minute after a correction before they're back. Give him that room tomorrow.
+    </div>
+    <button class="back" onclick="go('address-now')">← Back</button>
+  </div>
+
+  <div class="passage" id="read-shutdown">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      The shutdown tells you something about how he receives public correction. That's useful data. It doesn't mean you were wrong to address it — it means you now know something about how to reach him next time.<br><br>A quiet check-in before tomorrow's class costs you thirty seconds.
+    </div>
+    <button class="back" onclick="go('address-now')">← Back</button>
+  </div>
+
+  <div class="passage" id="clue-structure">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      Structure as management. If his body needs to move and his mouth needs to work, the lesson design is either with you or against you on this.<br><br>You don't have to redesign everything. You need two or three moments per period where that energy has a sanctioned place to go.
+    </div>
+    <button class="back" onclick="go('redirect')">← Back</button>
+  </div>
+
+  <div class="passage" id="clue-belonging">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      Belonging as management. He lights up when he has a partner. He's not calling out to be difficult — he's reaching for connection in the only way he currently knows how to in this room.<br><br>That's a different problem than defiance. And it has a different solution.
+    </div>
+    <button class="back" onclick="go('redirect')">← Back</button>
+  </div>
+
+  <div class="passage" id="talk-expectation">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      You explain the norm clearly, without blame. "In this class, we raise our hand before speaking. I should have said that more explicitly at the start." He nods. He actually seems relieved — he wasn't trying to cause a problem. He just didn't know.<br><br>Explicit instruction isn't only for content.
+    </div>
+    <button class="back" onclick="go('ignore')">← Back</button>
+  </div>
+
+  <div class="passage" id="talk-connection">
+    <div class="rule"></div>
+    <div class="eyebrow">Week Three</div>
+    <div class="text">
+      You ask how the year is going. He's surprised you asked. He tells you about his schedule, his other classes. You listen for three minutes before you say anything about today.<br><br>When you do bring up the hand-raising, it lands differently. You're not a rule — you're a person who noticed him.
+    </div>
+    <button class="back" onclick="go('ignore')">← Back</button>
+  </div>
+
+</div>
+<script>
+function go(id){
+  document.querySelectorAll('.passage').forEach(function(p){p.classList.remove('active');});
+  var p=document.getElementById(id);
+  if(p){p.classList.add('active');window.scrollTo(0,0);}
+}
+</script>
+</body>
+</html>
